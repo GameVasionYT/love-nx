@@ -21,11 +21,10 @@ for f in *.lua; do
 	fi
 done
 
-CHANGED_LUA_HEADERS="$(git status --porcelain --untracked-files=no | grep '.lua.h' ||:)"
+CHANGED_FILES="$(git status --porcelain --untracked-files=no)"
+CHANGED_LUA_HEADERS="$(grep ".lua.h" <<< "$CHANGED_FILES" ||:)"
 
 if [[ -n "$CHANGED_LUA_HEADERS" ]]; then
 	echo -e "Unsynced lua headers found:\n$CHANGED_LUA_HEADERS" 1>&2
 	exit 2
 fi
-
-exit 0
